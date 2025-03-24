@@ -2,10 +2,10 @@
 
 ---
 
-### **NAME:**  
-### **DEPARTMENT:**  
-### **ROLL NO:**  
-### **DATE OF EXPERIMENT:**  
+### **NAME: S.MOULIDHARAN 
+### **DEPARTMENT: AIML 
+### **ROLL NO: 212224240095  
+### **DATE OF EXPERIMENT: 24/03/2025
 
 ---
 
@@ -53,7 +53,8 @@ The **accelerometer** measures linear acceleration in **X, Y, Z axes**, while th
 
 ---
 
-## **CIRCUIT DIAGRAM:**  
+## **CIRCUIT DIAGRAM:** 
+![WhatsApp Image 2025-03-24 at 10 53 26_5c66a6fb](https://github.com/user-attachments/assets/adb976a2-cda2-4806-9e5b-f957fa09e23d)
 ### **Connections:**  
 
 | MPU6050 Pin | Raspberry Pi Pico Pin |
@@ -66,66 +67,53 @@ The **accelerometer** measures linear acceleration in **X, Y, Z axes**, while th
 ---
 
 ## **PROGRAM (MicroPython)**  
-```python
+```
 from machine import Pin, I2C
 import utime
-
-# MPU6050 I2C address
 MPU6050_ADDR = 0x68
-
-# MPU6050 Registers
 PWR_MGMT_1 = 0x6B
 ACCEL_XOUT_H = 0x3B
 GYRO_XOUT_H = 0x43
 
-# Initialize I2C
-sda = Pin(20)  # Define your SDA pin
-scl = Pin(21)  # Define your SCL pin
-i2c = I2C(1, scl=scl, sda=sda, freq=400000)  # Use I2C1
-
+i2c = I2C(0, scl=Pin(1), sda=Pin(0), freq=400000)  
 def mpu6050_init():
-    i2c.writeto_mem(MPU6050_ADDR, PWR_MGMT_1, b'\x00')  # Wake up MPU6050
+    i2c.writeto_mem(MPU6050_ADDR, PWR_MGMT_1, b'\x00')  
 
 def read_raw_data(reg):
-    data = i2c.readfrom_mem(MPU6050_ADDR, reg, 2)
-    value = (data[0] << 8) | data[1]  # Combine high and low bytes
-    if value > 32767:
-        value -= 65536  # Convert to signed 16-bit
+   
+    data = i2c.readfrom_mem(MPU6050_ADDR, reg, 2) 
+    value = (data[0] << 8) | data[1]  
+    if value > 32767:  
+        value -= 65536
     return value
-
-def get_sensor_data():
-    accel_x = read_raw_data(ACCEL_XOUT_H) / 16384.0  # Convert to g
-    accel_y = read_raw_data(ACCEL_XOUT_H + 2) / 16384.0
-    accel_z = read_raw_data(ACCEL_XOUT_H + 4) / 16384.0
-    
-    gyro_x = read_raw_data(GYRO_XOUT_H) / 131.0  # Convert to deg/s
-    gyro_y = read_raw_data(GYRO_XOUT_H + 2) / 131.0
-    gyro_z = read_raw_data(GYRO_XOUT_H + 4) / 131.0
-    
-    return (accel_x, accel_y, accel_z, gyro_x, gyro_y, gyro_z)
-
-# Initialize MPU6050
 mpu6050_init()
-
 while True:
-    ax, ay, az, gx, gy, gz = get_sensor_data()
-    print(f"Accel: X={ax:.2f}g, Y={ay:.2f}g, Z={az:.2f}g | Gyro: X={gx:.2f}°/s, Y={gy:.2f}°/s, Z={gz:.2f}°/s")
-    utime.sleep(1)
-```
+    ax = read_raw_data(ACCEL_XOUT_H) / 16384.0
+    ay = read_raw_data(ACCEL_XOUT_H + 2) / 16384.0
+    az = read_raw_data(ACCEL_XOUT_H + 4) / 16384.0
+  
+    gx = read_raw_data(GYRO_XOUT_H) / 131.0
+    gy = read_raw_data(GYRO_XOUT_H + 2) / 131.0
+    gz = read_raw_data(GYRO_XOUT_H + 4) / 131.0
 
----
+    print(f"Accel: X={ax}, Y={ay}, Z={az} | Gyro: X={gx}, Y={gy}, Z={gz}")
+
+    utime.sleep(10)
+```
 
 ## **OUTPUT:**  
 When the above program is executed, the output on the serial monitor will display real-time acceleration and gyroscope values, such as:
-```
+
 Accel: X=0.02g, Y=-0.01g, Z=1.00g | Gyro: X=0.05°/s, Y=-0.02°/s, Z=0.01°/s
 Accel: X=0.03g, Y=-0.02g, Z=1.01g | Gyro: X=0.06°/s, Y=-0.03°/s, Z=0.02°/s
-...
-```
----
+
+![WhatsApp Image 2025-03-24 at 10 53 26_12609b64](https://github.com/user-attachments/assets/63675358-ebc6-4418-bee2-52821be2c571)
+![WhatsApp Image 2025-03-24 at 10 53 36_d9ab9372](https://github.com/user-attachments/assets/e662a763-e6d8-4e0f-8c87-0a2d273b1b8b)
+![WhatsApp Image 2025-03-24 at 10 53 43_c535e855](https://github.com/user-attachments/assets/e2c9b70f-f139-4876-8b52-8ef1bbbe30df)
+![WhatsApp Image 2025-03-24 at 10 53 53_c189ebbe](https://github.com/user-attachments/assets/c40df214-022f-45fe-8140-d79e630db9d6)
+
 
 ## **RESULT:**  
 The **MPU6050 sensor** was successfully interfaced with the **Raspberry Pi Pico**, and real-time **acceleration and gyroscope data** were read and displayed. The sensor values can be used for **motion tracking, tilt detection, and gesture control applications**.
 
----
 
