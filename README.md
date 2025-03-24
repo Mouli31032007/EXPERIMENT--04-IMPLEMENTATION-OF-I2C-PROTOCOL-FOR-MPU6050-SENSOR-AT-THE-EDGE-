@@ -54,7 +54,8 @@ The **accelerometer** measures linear acceleration in **X, Y, Z axes**, while th
 ---
 
 ## **CIRCUIT DIAGRAM:** 
-![WhatsApp Image 2025-03-24 at 10 53 26_5c66a6fb](https://github.com/user-attachments/assets/adb976a2-cda2-4806-9e5b-f957fa09e23d)
+![WhatsApp Image 2025-03-24 at 10 53 26_6a476b77](https://github.com/user-attachments/assets/3befe01c-4b83-4bdd-9f2f-29226ba9dd55)
+
 ### **Connections:**  
 
 | MPU6050 Pin | Raspberry Pi Pico Pin |
